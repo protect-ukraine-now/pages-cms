@@ -1,7 +1,16 @@
 export async function onRequest(context) {
   const { request, env } = context;
   const url = new URL(request.url);
-  
+
+  const body = {
+    client_id: env.GITHUB_CLIENT_ID,
+    client_secret: env.GITHUB_CLIENT_SECRET,
+    code: url.searchParams.get('code'),
+    redirect_uri: `${env.BASE_URL}/auth/callback`,
+  }
+
+  console.log(body)
+
   if (url.searchParams.has('code')) {
     const response = await fetch('https://github.com/login/oauth/access_token', {
       method: 'POST',
@@ -9,14 +18,9 @@ export async function onRequest(context) {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
       },
-      body: JSON.stringify({
-        client_id: env.GITHUB_CLIENT_ID,
-        client_secret: env.GITHUB_CLIENT_SECRET,
-        code: url.searchParams.get('code'),
-        redirect_uri: `${env.BASE_URL}/auth/callback`,
-      }),
+      body: JSON.stringify(body),
     });
-    
+
     if (!response.ok) {
       const errorText = await response.text();
       console.error(response);
@@ -24,11 +28,12 @@ export async function onRequest(context) {
     }
 
     const responseData = await response.json();
-    
+
+
     if (responseData.access_token) {
       return Response.redirect(`${env.BASE_URL}/?access_token=${responseData.access_token}`, 302);
     } else {
-      throw new Error('Access token not found');
+      throw new Error(JSON.stringify(responseData))
     }
   }
 
