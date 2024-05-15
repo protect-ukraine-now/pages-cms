@@ -282,7 +282,7 @@ const extension = computed(() => {
     const parts = schema.value.filename.split('.');
     return parts.length > 1 ? parts.pop() : '';
   } else {
-    return 'md';
+    return 'mdx';
   }
 });
 const fields = computed(() => schemaFields.value.map(field => field.name));
