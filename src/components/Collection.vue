@@ -278,11 +278,13 @@ const schemaFields = computed(() => {
 });
 const format = computed(() => schema.value.format || 'yaml-frontmatter');
 const extension = computed(() => {
-  if (schema.value.filename) {
+  if (schema.value.extension) {
+    return schema.value.extension
+  } else if (schema.value.filename) {
     const parts = schema.value.filename.split('.');
     return parts.length > 1 ? parts.pop() : '';
   } else {
-    return 'mdoc';
+    return 'md';
   }
 });
 const fields = computed(() => schemaFields.value.map(field => field.name));
