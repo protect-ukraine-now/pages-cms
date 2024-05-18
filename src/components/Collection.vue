@@ -282,7 +282,7 @@ const extension = computed(() => {
     const parts = schema.value.filename.split('.');
     return parts.length > 1 ? parts.pop() : '';
   } else {
-    return 'mdx';
+    return 'mdoc';
   }
 });
 const fields = computed(() => schemaFields.value.map(field => field.name));
@@ -324,7 +324,7 @@ const view = reactive({
 // TODO: add validation of fields in config (sort, fields, etc.), both here and in the settings editor
 const viewContents = computed(() => {
   let viewFiles = [...contents.value.files];
-  
+
   // Apply search filter
   if (view.search.trim()) {
     const query = view.search.trim();
@@ -339,7 +339,7 @@ const viewContents = computed(() => {
       }
       return `~${limitedEditDistance}`;
     });
-    
+
     try {
       searchResults = searchIndex.search(limitedQuery);
     } catch (error) {
@@ -352,7 +352,7 @@ const viewContents = computed(() => {
       return viewFiles.find(item => item.filename === result.ref);
     });
   }
-  
+
   // Apply sorting
   viewFiles = viewFiles.slice().sort((a, b) => {
     let comparison = 0;
