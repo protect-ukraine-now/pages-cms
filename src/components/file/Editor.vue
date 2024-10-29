@@ -242,7 +242,7 @@ const displayDescription = computed(() => {
   } else {
     return '';
   }
-  
+
   return renderDescription(markdownDescription);
 });
 
@@ -263,7 +263,7 @@ const handleRenamed = ({ renamedPath, renamedSha }) => {
   status.value = 'handling-renamed';
   router.replace({
     name: 'edit',
-    params: { owner: props.owner, repo: props.repo, branch: props.branch, path: renamedPath } 
+    params: { owner: props.owner, repo: props.repo, branch: props.branch, path: renamedPath }
   });
   currentPath.value = renamedPath;
   // Status get reset in the watcher at the end
@@ -319,7 +319,7 @@ const setEditor = async () => {
       content = Base64.decode(file.value.content);
     }
   }
-  
+
   // TODO: skip some of this parsing when the file is new
   if (serializedTypes.includes(mode.value) && schema.value?.fields) {
     let contentObject = {};
@@ -340,7 +340,7 @@ const setEditor = async () => {
       // We can't parse the content, we switch to the raw editor.
       mode.value = 'raw';
     }
-    
+
     // For YAML and JSON files, if schema.list is true we wrap the model and fields into an extra "listWrapper" object
     if (['yaml', 'json', 'toml'].includes(mode.value) && schema.value.list) {
       schema.value.fields = [{ name: 'listWrapper', type: 'object', list: true, label: false, fields: schema.value.fields }];
@@ -348,7 +348,7 @@ const setEditor = async () => {
     }
 
     // If it's an existing file and the schema has a date, but we couldn't get a date from the content and filenames have a date, we extract it
-    
+
     const dateField = schema.value.fields.find(field => field.name === 'date');
     if (dateField && file.value?.name && !contentObject.date && (!schema.value.filename || schema.value.filename.startsWith('{year}-{month}-{day}'))) {
       const filenameDate = getDateFromFilename(file.value.name);
@@ -363,7 +363,7 @@ const setEditor = async () => {
     model.value = content;
   }
 
-  
+
 
   initialModel.value = JSON.parse(JSON.stringify(model.value));
   setDisplayTitle();
@@ -405,11 +405,11 @@ const save = async () => {
   } else {
     content = model.value;
   }
-  
+
   try {
     // If it's a new file, we need to generate a filename
     if (!sha.value) {
-      const pattern = (schema.value && schema.value.filename) ? schema.value.filename : '{year}-{month}-{day}-{primary}.md';
+      const pattern = (schema.value && schema.value.filename) ? schema.value.filename : `{year}-{month}-{day}-{primary}.${schema.value.extension ?? 'md'}`;
       const filename = generateFilename(pattern, schema.value, model.value);
       currentPath.value = `${folder.value}/${filename}`;
     }
@@ -428,7 +428,7 @@ const save = async () => {
     if (!sha.value) {
       router.replace({
         name: 'edit',
-        params: { owner: props.owner, repo: props.repo, branch: props.branch, path: currentPath.value } 
+        params: { owner: props.owner, repo: props.repo, branch: props.branch, path: currentPath.value }
       });
     }
 
