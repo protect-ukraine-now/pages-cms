@@ -123,7 +123,7 @@ const set = async (owner, repo, branch) => {
             item.path = item.path.replace(/^\/|\/$/g, '');
           }
           if (item.filename == null && item.type === 'collection') {
-            item.filename = '{year}-{month}-{day}-{primary}.md3';
+            item.filename = '{year}-{month}-{day}-{primary}.md';
           }
           if (item.extension == null) {
             const filename = item.type === 'file' ? item.path : item.filename;
