@@ -409,7 +409,7 @@ const save = async () => {
   try {
     // If it's a new file, we need to generate a filename
     if (!sha.value) {
-      const pattern = (schema.value && schema.value.filename) ? schema.value.filename : `{year}-{month}-{day}-{primary}.${schema.value.extension ?? 'md'}`;
+      const pattern = (schema.value && schema.value.filename) ? schema.value.filename : `{year}-{month}-{day}-{primary}.${schema.value.extension ? schema.value.extension + '1' : 'md2'}`;
       const filename = generateFilename(pattern, schema.value, model.value);
       currentPath.value = `${folder.value}/${filename}`;
     }
