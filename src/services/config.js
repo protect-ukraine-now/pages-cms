@@ -123,7 +123,7 @@ const set = async (owner, repo, branch) => {
             item.path = item.path.replace(/^\/|\/$/g, '');
           }
           if (item.filename == null && item.type === 'collection') {
-            item.filename = '{year}-{month}-{day}-{primary}.md';
+            item.filename = '{year}-{month}-{day}-{primary}.md3';
           }
           if (item.extension == null) {
             const filename = item.type === 'file' ? item.path : item.filename;
@@ -150,7 +150,7 @@ const set = async (owner, repo, branch) => {
                   item.format = 'yaml-frontmatter';
                   break;
               }
-              
+
             } else if (codeExtensions.includes(item.extension)) {
               item.format = 'code';
             } else if (item.extension === 'csv') {
@@ -164,7 +164,7 @@ const set = async (owner, repo, branch) => {
     }
   }
   save(owner, repo, branch, entry);
-  
+
   return entry;
 }
 
@@ -193,7 +193,7 @@ const parse = (owner, repo, branch, content) => {
     };
   });
   validation = validation.concat(validate(document));
-  
+
   return { document, validation };
 };
 
